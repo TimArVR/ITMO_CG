@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="D:\Учебные материалы\02 семестр 2023\КГРВ\MySuper3DApp.cpp" />
+    <ClCompile Include="MySuper3DApp.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
