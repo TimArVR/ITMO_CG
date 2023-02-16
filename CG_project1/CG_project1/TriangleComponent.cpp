@@ -114,12 +114,7 @@ void TriangleComponent::Initialize()
 		vertexBC->GetBufferSize(),
 		&layout);
 
-	DirectX::XMFLOAT4 points[8] = {
-		DirectX::XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f),	DirectX::XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f),
-		DirectX::XMFLOAT4(-0.5f, -0.5f, 0.5f, 1.0f),	DirectX::XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f),
-		DirectX::XMFLOAT4(0.5f, -0.5f, 0.5f, 1.0f),	DirectX::XMFLOAT4(0.0f, 1.0f, 0.0f, 1.0f),
-		DirectX::XMFLOAT4(-0.5f, 0.5f, 0.5f, 1.0f),	DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f),
-	};
+
 
 	//vertexBufDesc = {};
 	vertexBufDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -145,6 +140,8 @@ void TriangleComponent::Initialize()
 	indexBufDesc.MiscFlags = 0;
 	indexBufDesc.StructureByteStride = 0;
 	indexBufDesc.ByteWidth = sizeof(int) * std::size(indeces);
+
+
 
 	D3D11_SUBRESOURCE_DATA indexData = {};
 	indexData.pSysMem = indeces;

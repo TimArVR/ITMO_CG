@@ -11,6 +11,8 @@
 #include <directxmath.h>
 #include <chrono>
 
+#include ".\SimpleMath.h"
+
 
 int main()
 {

@@ -24,13 +24,18 @@
     <ClCompile Include="GameComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MySuper3DApp.cpp" />
+    <ClCompile Include="SimpleMath.cpp" />
     <ClCompile Include="TriangleComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DisplayWin32.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameComponent.h" />
+    <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="TriangleComponent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SimpleMath.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
