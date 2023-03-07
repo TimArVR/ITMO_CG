@@ -141,6 +141,16 @@ void TriangleComponent::Initialize()
 	indexBufDesc.StructureByteStride = 0;
 	indexBufDesc.ByteWidth = sizeof(int) * std::size(indeces);
 
+	//D3D11_BUFFER_DESC constBufDesc = {};
+	//constBufDesc.Usage = D3D11_USAGE_DEFAULT;
+	//constBufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	//constBufDesc.CPUAccessFlags = 0;
+	//constBufDesc.MiscFlags = 0;
+	//constBufDesc.StructureByteStride = 0;
+	//constBufDesc.ByteWidth = sizeof(SimpleMath::Vector4);
+
+	//ID3D11Buffer* constBuf;
+	//device->
 
 
 	D3D11_SUBRESOURCE_DATA indexData = {};
@@ -150,9 +160,6 @@ void TriangleComponent::Initialize()
 
 
 	gameInstance->device->CreateBuffer(&indexBufDesc, &indexData, &ib);
-
-
-
 
 
 	CD3D11_RASTERIZER_DESC rastDesc = {};

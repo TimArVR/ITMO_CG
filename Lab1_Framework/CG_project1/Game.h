@@ -9,13 +9,13 @@
 #include <iostream>
 #include <chrono>
 
-#pragma comment(lib, "d3d11.lib")
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3dcompiler.lib")
-#pragma comment(lib, "dxguid.lib")
+#include "SimpleMath.h"
+
+
 
 
 #include ".\DisplayWin32.h"
+
 
 class GameComponent;
 
