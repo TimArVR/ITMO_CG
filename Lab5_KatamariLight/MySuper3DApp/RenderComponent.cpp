@@ -279,9 +279,9 @@ void RenderComponent::Update(float deltaTime)
 	perObject.invertTransposeWorld = Transform;  //BeLight?? //Should be scale*rotation invert transpose
 	perScene.viewDirectionSpecular = //BeLight??
 		Vector4(
-			Game::GetInstance()->currentCamera->gameObject->transformComponent->localPosition->x - Game::GetInstance()->currentCamera->gameObject->transformComponent->target.x,
-			Game::Instance()->camera->transform->localPosition->y - Game::Instance()->camera->target.y,
-			Game::Instance()->camera->transform->localPosition->z - Game::Instance()->camera->target.z,
+			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().x - Game::GetInstance()->currentCamera->target.x,
+			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().y - Game::GetInstance()->currentCamera->target.y,
+			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().z - Game::GetInstance()->currentCamera->target.z,
 			0.0f
 		);
 	perScene.viewDirectionSpecular.Normalize();//BeLight
