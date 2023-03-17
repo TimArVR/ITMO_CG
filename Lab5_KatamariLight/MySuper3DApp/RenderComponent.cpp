@@ -262,6 +262,16 @@ void RenderComponent::Initialize()
 
 void RenderComponent::Update(float deltaTime)
 {
+	//UINT strides[] = { 32 }; //BeLight
+	//UINT strides[] = { 48 }; //3 float4 //BeLight
+	//UINT offsets[] = { 0 };
+	//perObject = {};//BeLight
+	//perScene = {};//BeLight
+	perScene.lightDirection = { 1.0f, 1.0f, 0.0f, 0.0f };//BeLight
+	perScene.lightDirection.Normalize();//BeLight
+	perScene.lightColor = { 1.0f, 1.0f, 1.0f, 0.5f };//BeLight
+
+
 	DirectX::XMMATRIX modelViewProjectionMatrix = gameObject->transformComponent->GetModel() *
 		Game::GetInstance()->currentCamera->gameObject->transformComponent->GetView() * Game::GetInstance()->currentCamera->GetProjection();
 
@@ -276,7 +286,7 @@ void RenderComponent::Update(float deltaTime)
 	//Game::GetInstance()->GetRenderSystem()->context->UpdateSubresource(constBuffer.Get(), 0, nullptr, &Transform, 0, 0); //BeLight
 
 	perObject.constBufMatrix = modelViewProjectionMatrix; //BeLight?? //Should be scale*rotation*position*Camera
-	perObject.invertTransposeWorld = Transform;  //BeLight?? //Should be scale*rotation invert transpose
+	perObject.invertTransposeWorld = DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr,gameObject->transformComponent->GetModel()));  //BeLight?? //Should be scale*rotation invert transpose
 	perScene.viewDirectionSpecular = //BeLight??
 		Vector4(
 			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().x - Game::GetInstance()->currentCamera->target.x,
@@ -301,14 +311,14 @@ void RenderComponent::Draw()
 	Game::GetInstance()->GetRenderSystem()->context->IASetInputLayout(inputLayout.Get());
 	Game::GetInstance()->GetRenderSystem()->context->IASetPrimitiveTopology(topology);
 	Game::GetInstance()->GetRenderSystem()->context->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	//UINT strides[] = { 32 }; //BeLight
+	////UINT strides[] = { 32 }; //BeLight
 	UINT strides[] = { 48 }; //3 float4 //BeLight
 	UINT offsets[] = { 0 };
-	perObject = {};//BeLight
-	perScene = {};//BeLight
-	perScene.lightDirection = { 1.0f, 1.0f, 0.0f, 0.0f };//BeLight
-	perScene.lightDirection.Normalize();//BeLight
-	perScene.lightColor = { 1.0f, 1.0f, 1.0f, 0.5f };//BeLight
+	//perObject = {};//BeLight
+	//perScene = {};//BeLight
+	//perScene.lightDirection = { 1.0f, 1.0f, 0.0f, 0.0f };//BeLight
+	//perScene.lightDirection.Normalize();//BeLight
+	//perScene.lightColor = { 1.0f, 1.0f, 1.0f, 0.5f };//BeLight
 
 	Game::GetInstance()->GetRenderSystem()->context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), strides, offsets);
 	Game::GetInstance()->GetRenderSystem()->context->VSSetShader(vertexShader.Get(), nullptr, 0);

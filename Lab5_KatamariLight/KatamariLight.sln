@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MySuper3DApp", "MySuper3DApp\MySuper3DApp.vcxproj", "{E8B6632A-EB3E-4BEA-9D9D-44BB9E9819EF}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KatamariGame", "MySuper3DApp\MySuper3DApp.vcxproj", "{E8B6632A-EB3E-4BEA-9D9D-44BB9E9819EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Additional files", "Additional files", "{3935CDA1-B44B-480E-B146-F02F398E0D78}"
+	ProjectSection(SolutionItems) = preProject
+		Shaders\TexturedShader.hlsl = Shaders\TexturedShader.hlsl
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

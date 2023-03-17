@@ -159,8 +159,5 @@
     <FxCompile Include="..\Shaders\MyVeryFirstShader.hlsl">
       <Filter>Resource Files\Shaders</Filter>
     </FxCompile>
-    <FxCompile Include="..\Shaders\TexturedShader.hlsl">
-      <Filter>Resource Files\Shaders</Filter>
-    </FxCompile>
   </ItemGroup>
 </Project>

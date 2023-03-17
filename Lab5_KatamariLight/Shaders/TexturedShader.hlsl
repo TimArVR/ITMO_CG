@@ -50,7 +50,7 @@ float4 PSMain(PS_IN input) : SV_Target
     float spec = pow(max(dot(viewDirectionSpecular.xyz, reflectDir.xyz), 0.0f), 16); //BeLight
     float4 specular = viewDirectionSpecular.w * spec /* * float4(viewDirectionSpecular.xyz, 1.0f)*/; //BeLight
 
-    float4 result = (ambient + diffuse + specular) * tex; //BeLight
+    float4 result =0 /*(ambient + diffuse + specular) * tex*/; //BeLight
 
     return float4(result.xyz, 1.0f); //BeLight
     
