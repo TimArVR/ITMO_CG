@@ -11,6 +11,7 @@ using namespace DirectX::SimpleMath;
 struct LightPerObject { //BeLight
     Matrix constBufMatrix;
     Matrix invertTransposeWorld;
+    Matrix worldP;
 };
 
 struct LightPerScene { //BeLight

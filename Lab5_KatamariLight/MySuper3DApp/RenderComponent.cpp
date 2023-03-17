@@ -33,6 +33,9 @@ RenderComponent::~RenderComponent()
 
 void RenderComponent::Initialize()
 {
+	perObject = {};//BeLight
+	perScene = {};//BeLight
+
 	Game::GetInstance()->GetRenderSystem()->renderComponents.push_back(this);
 
 	std::wstring fileName(shaderFileName.begin(), shaderFileName.end());
@@ -257,7 +260,6 @@ void RenderComponent::Initialize()
 	rastDesc.FillMode = D3D11_FILL_SOLID;
 	rastDesc.DepthClipEnable = true;
 	Game::GetInstance()->GetRenderSystem()->device->CreateRasterizerState(&rastDesc, rastState.GetAddressOf());
-
 }
 
 void RenderComponent::Update(float deltaTime)
@@ -287,19 +289,24 @@ void RenderComponent::Update(float deltaTime)
 
 	perObject.constBufMatrix = modelViewProjectionMatrix; //BeLight?? //Should be scale*rotation*position*Camera
 	perObject.invertTransposeWorld = DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr,gameObject->transformComponent->GetModel()));  //BeLight?? //Should be scale*rotation invert transpose
+	perObject.worldP = gameObject->transformComponent->GetModel();
+	
 	perScene.viewDirectionSpecular = //BeLight??
 		Vector4(
-			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().x - Game::GetInstance()->currentCamera->target.x,
-			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().y - Game::GetInstance()->currentCamera->target.y,
-			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().z - Game::GetInstance()->currentCamera->target.z,
+			//Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().x - Game::GetInstance()->currentCamera->target.x,
+			//Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().y - Game::GetInstance()->currentCamera->target.y,
+			//Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().z - Game::GetInstance()->currentCamera->target.z,
+			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().x,
+			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().y,
+			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().z,
 			0.0f
 		);
-	perScene.viewDirectionSpecular.Normalize();//BeLight
+	//perScene.viewDirectionSpecular.Normalize();//BeLight
 	perScene.viewDirectionSpecular.w = 0.5f;//BeLight
 	Game::GetInstance()->GetRenderSystem()->context->UpdateSubresource(constBuffers[0], 0, nullptr, &perObject, 0, 0);//BeLight
 	Game::GetInstance()->GetRenderSystem()->context->UpdateSubresource(constBuffers[1], 0, nullptr, &perScene, 0, 0);//BeLight
-	Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 2, constBuffers);//BeLight
-	Game::GetInstance()->GetRenderSystem()->context->PSSetConstantBuffers(0, 2, constBuffers);//BeLight
+	//Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 2, constBuffers);//BeLight
+	//Game::GetInstance()->GetRenderSystem()->context->PSSetConstantBuffers(0, 2, constBuffers);//BeLight
 
 
 
@@ -323,6 +330,9 @@ void RenderComponent::Draw()
 	Game::GetInstance()->GetRenderSystem()->context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), strides, offsets);
 	Game::GetInstance()->GetRenderSystem()->context->VSSetShader(vertexShader.Get(), nullptr, 0);
 	Game::GetInstance()->GetRenderSystem()->context->PSSetShader(pixelShader.Get(), nullptr, 0);
+	Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 2, constBuffers);//BeLight
+	Game::GetInstance()->GetRenderSystem()->context->PSSetConstantBuffers(0, 2, constBuffers);//BeLight
+
 
 	if (isTexture)
 	{
@@ -332,17 +342,15 @@ void RenderComponent::Draw()
 	//Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 1, constBuffer.GetAddressOf());//BeLight
 	Game::GetInstance()->GetRenderSystem()->context->DrawIndexed(indices.size(), 0, 0);
 
-
-
 }
 
 void RenderComponent::AddCube(float radius)
 {
 	points = {
-		Vector4(   radius,   radius, 0.0f, 1.0f), Vector4(radius * 2, radius * 2, 0.0f, 0.0f),
-		Vector4( - radius, - radius, 0.0f, 1.0f), Vector4( 0.0f,   0.0f,  0.0f, 0.0f),
-		Vector4(   radius, - radius, 0.0f, 1.0f), Vector4(radius * 2,  0.0f,  0.0f, 0.0f),
-		Vector4( - radius,   radius, 0.0f, 1.0f), Vector4( 0.0f,  radius * 2, 0.0f, 0.0f)
+		Vector4(   radius,   radius, 0.0f, 1.0f), Vector4(radius * 2, radius * 2, 0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f),
+		Vector4( - radius, - radius, 0.0f, 1.0f), Vector4( 0.0f,   0.0f,  0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f),
+		Vector4(   radius, - radius, 0.0f, 1.0f), Vector4(radius * 2,  0.0f,  0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f),
+		Vector4( - radius,   radius, 0.0f, 1.0f), Vector4( 0.0f,  radius * 2, 0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f)
 	};
 
 	indices = { 0, 1, 2, 1, 0, 3 };
@@ -547,6 +555,7 @@ void RenderComponent::ProcessMesh(aiMesh* mesh, const aiScene* scene, float scal
 
 		points.push_back({ mesh->mVertices[i].x * scaleRate, mesh->mVertices[i].y * scaleRate, mesh->mVertices[i].z * scaleRate, 1.0f});
 		points.push_back(textureCoordinate);
+		points.push_back({ mesh->mNormals[i].x,  mesh->mNormals[i].y,  mesh->mNormals[i].z, 0.0f});//BeLight
 	}
 
 	for (UINT i = 0; i < mesh->mNumFaces; i++) {

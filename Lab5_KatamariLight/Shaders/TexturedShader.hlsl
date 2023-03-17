@@ -5,6 +5,7 @@ struct PS_IN
     float4 pos : SV_POSITION;
     float4 tex : TEXCOORD;
     float4 normal : NORMAL; //BeLight
+    float4 worldPos : WORLDPOS; //BeLight
 };
 
 struct VS_IN
@@ -24,6 +25,7 @@ cbuffer ConstBuf : register(b0)
     //ConstData constData; //BeLight
     float4x4 worldViewProjMatrix; //BeLight
     float4x4 invertedMatrix; //BeLight
+    float4x4 worldMatrix; //BeLight
 };
 
 cbuffer SceneConstBuf : register(b1) //BeLight
@@ -47,10 +49,11 @@ float4 PSMain(PS_IN input) : SV_Target
     float4 diffuse = diff * float4(lightColor.xyz, 1.0f); //BeLight
 
     float4 reflectDir = reflect(-lightDirection, norm); //BeLight
-    float spec = pow(max(dot(viewDirectionSpecular.xyz, reflectDir.xyz), 0.0f), 16); //BeLight
+    float3 viewdir = normalize(viewDirectionSpecular.xyz - input.worldPos.xyz); //BeLight
+    float spec = pow(max(dot(viewdir, reflectDir.xyz), 0.0f), 16); //BeLight
     float4 specular = viewDirectionSpecular.w * spec /* * float4(viewDirectionSpecular.xyz, 1.0f)*/; //BeLight
 
-    float4 result =0 /*(ambient + diffuse + specular) * tex*/; //BeLight
+    float4 result = (ambient + diffuse + specular) * tex; //BeLight
 
     return float4(result.xyz, 1.0f); //BeLight
     
@@ -65,6 +68,6 @@ PS_IN VSMain(VS_IN input)
     output.pos = mul(float4(input.pos.xyz, 1.0f), worldViewProjMatrix); //BeLight
     output.tex = input.tex;
     output.normal = mul(float4(input.normal.xyz, 0.0f), invertedMatrix); //BeLight
-    
+    output.worldPos = mul(float4(input.pos.xyz, 1.0f), worldMatrix); //BeLight
     return output;
 }
