@@ -4,6 +4,7 @@
 
 using namespace DirectX;
 using namespace SimpleMath;
+
 float rand_FloatRange(float a, float b)
 {
 	return ((b - a) * ((float)rand() / RAND_MAX)) + a;
