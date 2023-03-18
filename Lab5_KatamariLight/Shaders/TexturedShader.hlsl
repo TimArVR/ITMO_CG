@@ -50,7 +50,7 @@ float4 PSMain(PS_IN input) : SV_Target
 
     float4 reflectDir = reflect(-lightDirection, norm); //BeLight
     float3 viewdir = normalize(viewDirectionSpecular.xyz - input.worldPos.xyz); //BeLight
-    float spec = pow(max(dot(viewdir, reflectDir.xyz), 0.0f), 16); //BeLight
+    float spec = pow(max(dot(viewdir, reflectDir.xyz), 0.0f), 2); //BeLight
     float4 specular = viewDirectionSpecular.w * spec /* * float4(viewDirectionSpecular.xyz, 1.0f)*/; //BeLight
 
     float4 result = (ambient + diffuse + specular) * tex; //BeLight
