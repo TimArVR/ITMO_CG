@@ -195,7 +195,6 @@ void RenderComponent::Initialize()
 	indexBufDesc.CPUAccessFlags = 0;
 	indexBufDesc.MiscFlags = 0;
 	indexBufDesc.StructureByteStride = 0;
-	//indexBufDesc.ByteWidth = sizeof(int) * std::size(indices); //BeLight
 	indexBufDesc.ByteWidth = sizeof(unsigned int) * std::size(indices);
 
 	D3D11_SUBRESOURCE_DATA indexData = {};
@@ -264,11 +263,6 @@ void RenderComponent::Initialize()
 
 void RenderComponent::Update(float deltaTime)
 {
-	//UINT strides[] = { 32 }; //BeLight
-	//UINT strides[] = { 48 }; //3 float4 //BeLight
-	//UINT offsets[] = { 0 };
-	//perObject = {};//BeLight
-	//perScene = {};//BeLight
 	perScene.lightDirection = { 1.0f, 1.0f, 0.0f, 0.0f };//BeLight
 	perScene.lightDirection.Normalize();//BeLight
 	perScene.lightColor = { 1.0f, 1.0f, 1.0f, 0.5f };//BeLight
@@ -291,25 +285,18 @@ void RenderComponent::Update(float deltaTime)
 	perObject.invertTransposeWorld = DirectX::XMMatrixTranspose(DirectX::XMMatrixInverse(nullptr,gameObject->transformComponent->GetModel()));  //BeLight?? //Should be scale*rotation invert transpose
 	perObject.worldP = gameObject->transformComponent->GetModel();
 	
-	perScene.viewDirectionSpecular = //BeLight??
-		Vector4(
-			//Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().x - Game::GetInstance()->currentCamera->target.x,
-			//Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().y - Game::GetInstance()->currentCamera->target.y,
-			//Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().z - Game::GetInstance()->currentCamera->target.z,
+	perScene.viewDirectionSpecular = //BeLight
+		Vector4(			
 			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().x,
 			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().y,
 			Game::GetInstance()->currentCamera->gameObject->transformComponent->GetPosition().z,
-			0.0f
+			0.5f
 		);
-	//perScene.viewDirectionSpecular.Normalize();//BeLight
 	perScene.viewDirectionSpecular.w = 0.5f;//BeLight
 	Game::GetInstance()->GetRenderSystem()->context->UpdateSubresource(constBuffers[0], 0, nullptr, &perObject, 0, 0);//BeLight
 	Game::GetInstance()->GetRenderSystem()->context->UpdateSubresource(constBuffers[1], 0, nullptr, &perScene, 0, 0);//BeLight
 	//Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 2, constBuffers);//BeLight
 	//Game::GetInstance()->GetRenderSystem()->context->PSSetConstantBuffers(0, 2, constBuffers);//BeLight
-
-
-
 }
 
 void RenderComponent::Draw()
@@ -318,21 +305,15 @@ void RenderComponent::Draw()
 	Game::GetInstance()->GetRenderSystem()->context->IASetInputLayout(inputLayout.Get());
 	Game::GetInstance()->GetRenderSystem()->context->IASetPrimitiveTopology(topology);
 	Game::GetInstance()->GetRenderSystem()->context->IASetIndexBuffer(indexBuffer.Get(), DXGI_FORMAT_R32_UINT, 0);
-	////UINT strides[] = { 32 }; //BeLight
+	//UINT strides[] = { 32 }; //BeLight
 	UINT strides[] = { 48 }; //3 float4 //BeLight
 	UINT offsets[] = { 0 };
-	//perObject = {};//BeLight
-	//perScene = {};//BeLight
-	//perScene.lightDirection = { 1.0f, 1.0f, 0.0f, 0.0f };//BeLight
-	//perScene.lightDirection.Normalize();//BeLight
-	//perScene.lightColor = { 1.0f, 1.0f, 1.0f, 0.5f };//BeLight
 
 	Game::GetInstance()->GetRenderSystem()->context->IASetVertexBuffers(0, 1, vertexBuffer.GetAddressOf(), strides, offsets);
 	Game::GetInstance()->GetRenderSystem()->context->VSSetShader(vertexShader.Get(), nullptr, 0);
 	Game::GetInstance()->GetRenderSystem()->context->PSSetShader(pixelShader.Get(), nullptr, 0);
 	Game::GetInstance()->GetRenderSystem()->context->VSSetConstantBuffers(0, 2, constBuffers);//BeLight
 	Game::GetInstance()->GetRenderSystem()->context->PSSetConstantBuffers(0, 2, constBuffers);//BeLight
-
 
 	if (isTexture)
 	{
@@ -354,7 +335,6 @@ void RenderComponent::AddCube(float radius)
 	};
 
 	indices = { 0, 1, 2, 1, 0, 3 };
-
 }
 void RenderComponent::AddSphere(float radius, int sliceCount, int stackCount, DirectX::XMFLOAT4 color)
 {

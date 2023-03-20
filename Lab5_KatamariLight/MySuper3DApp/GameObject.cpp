@@ -38,7 +38,7 @@ void GameObject::CreateSphere(float radius, int sliceCount, int stackCount, Dire
 void GameObject::CreateCube(float radius)
 {
 	this->radius = radius;
-	renderComponent = new RenderComponent("../Shaders/TexturedShader.hlsl", "../Textures/concrete.JFIF", D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	renderComponent = new RenderComponent("../Shaders/TexturedShader.hlsl", "../Textures/concrete1.jpg", D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	//renderComponent = new RenderComponent("../Shaders/MyVeryFirstShader.hlsl", D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	renderComponent->AddCube(radius);
 	AddComponent(renderComponent);

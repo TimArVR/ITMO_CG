@@ -81,7 +81,7 @@ void KatamariDamacyGame::Initialize()
 	Game::GetInstance()->AddGameObject(object3);
 
 	objectN = new GameObject();
-	objectN->CreateMesh(0.5f, "../Textures/mushroom.png", "../Models/mushroom.fbx");
+	objectN->CreateMesh(0.5f, "../Textures/newGroundSp.png", "../Models/newGroundSp.fbx");
 	objectN->radius = 1.0f;
 	objectN->maxRadius = objectN->radius;
 	objectCollisionN = new CollisionComponent();

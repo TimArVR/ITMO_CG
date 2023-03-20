@@ -15,10 +15,10 @@ struct VS_IN
     float4 normal : NORMAL0; //BeLight
 };
 
-struct ConstData
-{
-    matrix WorldView;
-};
+//struct ConstData
+//{
+//    matrix WorldView;
+//};
 
 cbuffer ConstBuf : register(b0)
 {
@@ -40,6 +40,7 @@ SamplerState Sampler : register(s0);
 
 float4 PSMain(PS_IN input) : SV_Target
 {
+    
     float4 ambient = lightColor.w * float4(lightColor.xyz, 1.0f); //BeLight
     
     float4 tex = DiffuseMap.SampleLevel(Sampler, input.tex.xy, 0);
@@ -50,8 +51,8 @@ float4 PSMain(PS_IN input) : SV_Target
 
     float4 reflectDir = reflect(-lightDirection, norm); //BeLight
     float3 viewdir = normalize(viewDirectionSpecular.xyz - input.worldPos.xyz); //BeLight
-    float spec = pow(max(dot(viewdir, reflectDir.xyz), 0.0f), 2); //BeLight
-    float4 specular = viewDirectionSpecular.w * spec /* * float4(viewDirectionSpecular.xyz, 1.0f)*/; //BeLight
+    float spec = pow(max(dot(viewdir, reflectDir.xyz), 0.0f), 16); //BeLight
+    float4 specular = viewDirectionSpecular.w * spec * float4(lightColor.xyz,1.0f); //BeLight
 
     float4 result = (ambient + diffuse + specular) * tex; //BeLight
 
@@ -67,7 +68,7 @@ PS_IN VSMain(VS_IN input)
     //output.pos = mul(input.pos, constData.WorldView);//BeLight
     output.pos = mul(float4(input.pos.xyz, 1.0f), worldViewProjMatrix); //BeLight
     output.tex = input.tex;
-    output.normal = mul(float4(input.normal.xyz, 0.0f), invertedMatrix); //BeLight
+    output.normal = mul(float4(input.normal.xyz, 0.0f), worldMatrix); //BeLight
     output.worldPos = mul(float4(input.pos.xyz, 1.0f), worldMatrix); //BeLight
     return output;
 }
