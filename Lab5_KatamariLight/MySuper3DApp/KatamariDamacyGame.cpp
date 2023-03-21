@@ -19,7 +19,7 @@ void KatamariDamacyGame::Initialize()
 
 	GameObject* floor = new GameObject();
 	floor->CreateCube(100.0f);
-	floor->transformComponent->SetRotation(Quaternion::CreateFromAxisAngle(Vector3::Right, DirectX::XM_PIDIV2));
+	//floor->transformComponent->SetRotation(Quaternion::CreateFromAxisAngle(Vector3::Right, DirectX::XM_PIDIV2));
 
 
 	GameObject* katamari = new GameObject();

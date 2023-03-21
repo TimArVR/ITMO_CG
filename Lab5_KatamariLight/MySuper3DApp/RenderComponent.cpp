@@ -265,7 +265,7 @@ void RenderComponent::Update(float deltaTime)
 {
 	perScene.lightDirection = { 1.0f, 1.0f, 0.0f, 0.0f };//BeLight
 	perScene.lightDirection.Normalize();//BeLight
-	perScene.lightColor = { 1.0f, 1.0f, 1.0f, 0.5f };//BeLight
+	perScene.lightColor = { 1.0f, 1.0f, 1.0f, 0.3f };//BeLight
 
 
 	DirectX::XMMATRIX modelViewProjectionMatrix = gameObject->transformComponent->GetModel() *
@@ -328,10 +328,10 @@ void RenderComponent::Draw()
 void RenderComponent::AddCube(float radius)
 {
 	points = {
-		Vector4(   radius,   radius, 0.0f, 1.0f), Vector4(radius * 2, radius * 2, 0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f),
-		Vector4( - radius, - radius, 0.0f, 1.0f), Vector4( 0.0f,   0.0f,  0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f),
-		Vector4(   radius, - radius, 0.0f, 1.0f), Vector4(radius * 2,  0.0f,  0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f),
-		Vector4( - radius,   radius, 0.0f, 1.0f), Vector4( 0.0f,  radius * 2, 0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f)
+		Vector4(   radius,0.0f,   radius,  1.0f), Vector4(radius * 2, radius * 2, 0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f),
+		Vector4(-radius, 0.0f, -radius,  1.0f), Vector4(0.0f,   0.0f,  0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f),
+		Vector4(radius,0.0f, -radius,  1.0f), Vector4(radius * 2,  0.0f,  0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f),
+		Vector4(-radius,0.0f,   radius,  1.0f), Vector4( 0.0f,  radius * 2, 0.0f, 0.0f), Vector4(0.0f, 1.0f, 0.0f, 0.0f)
 	};
 
 	indices = { 0, 1, 2, 1, 0, 3 };
@@ -405,7 +405,7 @@ void RenderComponent::AddSphere(float radius, int sliceCount, int stackCount, Di
 			indices.push_back(baseIndex + i + 1);
 		}
 	}
-	else //?? do we need it
+	else //
 	{
 		int g = 0;
 		points.push_back(DirectX::XMFLOAT4(0, radius, 0, 1));

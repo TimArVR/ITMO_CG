@@ -15,10 +15,6 @@ struct VS_IN
     float4 normal : NORMAL0; //BeLight
 };
 
-//struct ConstData
-//{
-//    matrix WorldView;
-//};
 
 cbuffer ConstBuf : register(b0)
 {
@@ -40,7 +36,7 @@ SamplerState Sampler : register(s0);
 
 float4 PSMain(PS_IN input) : SV_Target
 {
-    
+    //return input.normal;
     float4 ambient = lightColor.w * float4(lightColor.xyz, 1.0f); //BeLight
     
     float4 tex = DiffuseMap.SampleLevel(Sampler, input.tex.xy, 0);
@@ -56,16 +52,13 @@ float4 PSMain(PS_IN input) : SV_Target
 
     float4 result = (ambient + diffuse + specular) * tex; //BeLight
 
-    return float4(result.xyz, 1.0f); //BeLight
-    
-    //return tex;//BeLight
+    return float4(result.xyz, 1.0f); //BeLight    
 }
 
 PS_IN VSMain(VS_IN input)
 {
     PS_IN output = (PS_IN) 0;
-
-    //output.pos = mul(input.pos, constData.WorldView);//BeLight
+    
     output.pos = mul(float4(input.pos.xyz, 1.0f), worldViewProjMatrix); //BeLight
     output.tex = input.tex;
     output.normal = mul(float4(input.normal.xyz, 0.0f), worldMatrix); //BeLight
