@@ -36,7 +36,7 @@ SamplerState Sampler : register(s0);
 
 float4 PSMain(PS_IN input) : SV_Target
 {
-    return input.normal;
+    //return input.normal;
     float4 ambient = lightColor.w * float4(lightColor.xyz, 1.0f); //BeLight
     
     float4 tex = DiffuseMap.SampleLevel(Sampler, input.tex.xy, 0);
